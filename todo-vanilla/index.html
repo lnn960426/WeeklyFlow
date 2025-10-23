@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>todo-vanilla</title>
+</head>
+
+<body>
+
+  <div class="page">
+
+    <section class="card">
+
+
+      <header class="card-head">
+        <div id="date"></div>
+        <div id="time"></div>
+      </header>
+
+      <h2 class="title">To Do List</h2>
+
+      <nav id="week" class="week"></nav>
+
+      <section id="todo-area">
+
+        <p id="message"> There's no task for today.<br>Click "Add" to create one.</p>
+
+        <ul id="task-list"> </ul>
+
+        
+        <template id="todo-item">
+          <li class="item">
+            <span class="check-box"></span>
+            <span class="text"></span>
+            <small class="time"></small>
+          </li>
+        </template>
+
+        <button id="add-btn">Add</button>
+
+        <form id="new-task" class="row" style="display: none;">
+          <input id="task-text" placeholder="Input your task...." autocomplete="off">
+          <input id="task-time" type="time">
+          <button id="sub-btn" type="submit">Save</button>
+        </form>
+
+      </section>
+
+
+    </section>
+  </div>
+
+
+  <script type="module" src="/app.js"></script>
+</body>
+
+</html>

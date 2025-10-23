@@ -1,0 +1,234 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+}
+
+.page {
+    width: 100%;
+    min-height: 100vh;
+    background: #f1f4fd;
+    display: grid;
+    place-items: center;
+}
+
+.card {
+    width: 420px;
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    border: solid 0.5px #dbdbdb;
+}
+
+.card-head {
+    display: flex;
+    justify-content: space-between;
+    color: #6b7280;
+    font-weight: 400;
+}
+
+.title {
+    display: flex;
+    color: #1d224e;
+
+}
+
+
+.week {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0 14px;
+    padding: 8px 4px;
+    color: #6b7280;
+}
+
+.day {
+    width: 42px;
+    aspect-ratio: 1/1;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+}
+
+.dow {
+    font-size: 12px;
+}
+
+.dnum {
+    font-size: 13px;
+}
+
+.day.active {
+    background: #4561db;
+    color: white;
+}
+
+
+#todo-area {
+    margin-top: 1rem;
+    min-height: 50vh;
+}
+
+#message {
+    color: #6b7280;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.row {
+    display: flex;
+    gap: .5rem;
+    margin: .5rem 0;
+}
+
+#task-text {
+    flex: 1;
+    padding: .5rem .6rem;
+
+}
+
+#task-time,
+button {
+    padding: .5rem .6rem;
+
+}
+
+#task-list {
+    list-style: none;
+    margin: .5rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: .5rem;
+}
+
+#task-list li {
+    background: #f1f4fd;
+    font-size: 18px;
+    color: #1d224e;
+    padding: 0.8rem 0.8rem;
+    border-radius: .5rem;
+    margin-top: 0.5rem;
+
+}
+
+
+
+#add-btn {
+    border-radius: .5rem;
+    border-style: none;
+    background: #4561db;
+    font-size: 15px;
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    color: white;
+    padding: 0.8rem;
+    width: 100%;
+    cursor: pointer;
+
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    justify-content:start;
+}
+
+
+.item span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 15px;
+}
+
+#task-text {
+    border: 1.5px solid #6b7280;
+    border-radius: 5px;
+}
+
+
+#task-time {
+    border: 1.5px solid #6b7280;
+    border-radius: 5px;
+}
+
+#sub-btn {
+    border-radius: .5rem;
+    border-style: none;
+    background: #4561db;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    color: white;
+    padding: 0.8rem;
+    cursor: pointer;
+}
+
+
+
+.check-box {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    border: 2px solid #e5e7eb;
+    background-color: white;
+    border-radius: 50%;
+    place-items: center;
+    cursor: pointer;
+    transition: background .2s border-color .2s;
+}
+
+.item.done .check-box {
+    background-color: #47da99;
+    border-color: #18c45d;
+    animation: pop 0.5s;
+    animation-direction: alternate;
+}
+
+.item.done .check-box::after{
+    content: "";
+    display: block;
+    width: 0.8rem;
+    height: 1.3rem;
+    border-right: 0.2rem solid white;
+    border-bottom: 0.2rem solid white;
+    transform: rotate(45deg);
+}
+
+
+@keyframes pop {
+ 0% {
+  transform: scale(1);
+ }
+
+ 50% {
+  transform: scale(0.9);
+ }
+
+ 100% {
+  transform: scale(1);
+ }
+}
+
+.item .text{
+    margin-left: 2rem;
+}
+
+.item .time{
+    flex: 1;
+   text-align: end;
+}
+
+
+.item.done .text {
+    text-decoration: line-through;
+    opacity: .6;
+}
+
+.item.done .time {
+    text-decoration: line-through;
+    opacity: .6;
+}
