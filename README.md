@@ -69,6 +69,6 @@ merging my inner designer and developer mindsets.
 Clone and open locally:
 
 ```bash
-git clone https://github.com/yourusername/weekflow-todo.git
+git clone https://github.com/lnn960426/weekflow-todo.git
 cd weekflow-todo
 open index.html
