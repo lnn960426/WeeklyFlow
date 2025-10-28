@@ -12,45 +12,39 @@
 
   <div class="page">
 
-    <section class="card">
+    <div class="container">
+      <section class="card">
 
+        <header class="card-head">
+          <div id="date"></div>
+          <div id="time"></div>
+        </header>
 
-      <header class="card-head">
-        <div id="date"></div>
-        <div id="time"></div>
-      </header>
+        <h2 class="title">To Do List</h2>
 
-      <h2 class="title">To Do List</h2>
+        <nav id="week" class="week"></nav>
 
-      <nav id="week" class="week"></nav>
+        <section id="todo-area">
 
-      <section id="todo-area">
+          <p id="message"> 
+            There's no task for today.<br>
+            Click "Add" to create one.</p>
 
-        <p id="message"> There's no task for today.<br>Click "Add" to create one.</p>
+          <ul id="task-list"> </ul>
 
-        <ul id="task-list"> </ul>
+          <button id="add-btn">Add</button>
 
-        
-        <template id="todo-item">
-          <li class="item">
-            <span class="check-box"></span>
-            <span class="text"></span>
-            <small class="time"></small>
-          </li>
-        </template>
+          <form id="new-task" class="row" style="display: none;">
+            <input id="task-text" placeholder="Input your task...." autocomplete="off">
+            <input id="task-time" type="time">
+            <button id="sub-btn" type="submit">Save</button>
+          </form>
 
-        <button id="add-btn">Add</button>
+        </section>
 
-        <form id="new-task" class="row" style="display: none;">
-          <input id="task-text" placeholder="Input your task...." autocomplete="off">
-          <input id="task-time" type="time">
-          <button id="sub-btn" type="submit">Save</button>
-        </form>
 
       </section>
-
-
-    </section>
+    </div>
   </div>
 
 

@@ -24,19 +24,14 @@ function fmtTime(d = new Date()) {
 //Initialize once on page load
 todayDate.textContent = fmtDate();
 nowTime.textContent = fmtTime();
-
-
 //update time pre-second
-setInterval(() => {
-    nowTime.textContent = fmtTime();
-}, 1000);
+setInterval(() => nowTime.textContent = fmtTime(), 1000);
 
 
 
 
 // ===== Week (Sun - Sat) =====
 const weekContainer = document.querySelector('#week');
-
 //current selected day
 let selectedDate = new Date();
 
@@ -55,7 +50,6 @@ function showWeek() {
 
         const dayBox = document.createElement("div");
         dayBox.classList.add("day");
-
         dayBox.innerHTML = `
             <div class="dow">${weekNames[i]}</div>
             <div class="dnum">${dayDate.getDate()}</div>
@@ -85,6 +79,11 @@ showWeek();
 // ===== To do =====
 const taskList = document.querySelector('#task-list');
 const emptyMsg = document.querySelector('#message');
+// ===== add button + form =====
+const addBtn = document.querySelector('#add-btn');
+const form = document.querySelector('#new-task');
+const textInput = document.querySelector('#task-text');
+const timeInput = document.querySelector('#task-time')
 
 //read the local storage
 let todos = JSON.parse(localStorage.getItem('todos') || '[]');
@@ -105,12 +104,6 @@ function ymd(dateObj) {
     return `${y}-${m}-${d}`
 }
 
-
-// ===== add button + form =====
-const addBtn = document.querySelector('#add-btn');
-const form = document.querySelector('#new-task');
-const textInput = document.querySelector('#task-text');
-const timeInput = document.querySelector('#task-time')
 
 //add event: show form
 addBtn.addEventListener('click', () => {
@@ -187,59 +180,42 @@ function renderTodos() {
     form.style.display = 'none';
 
     //todo content
-    const template = document.querySelector("#todo-item");
-
-    //todo is the whole list, t is single task
-    for (const t of todayTodos) {
-        //get the content from the template, and make a colone of the first element child(li)
-        // cloneNode(true) means: clone all the element inside of the template, false means only li
-        const li = template.content.firstElementChild.cloneNode(true);
-
-        //dataset is HTML deafult property that show the info of the selected property
-        li.dataset.id = t.id;
-        //css 
+    todayTodos.forEach(t => {
+        const li = document.createElement('li');
+        li.className = 'item';
         if (t.isDone) li.classList.add('done');
-        //set the text class as t.text
-        li.querySelector('.text').textContent = t.text;
-        //set the time class as t.time
-        li.querySelector('.time').textContent = format12h(t.time);
-        // appendchild can only be used in DOM
+        li.dataset.id = t.id;
+
+        //check box
+        const checkBox = document.createElement('span');
+        checkBox.className = 'check-box';
+        checkBox.addEventListener('click',() => {
+            t.isDone = !t.isDone;
+            saveTodos();
+            renderTodos();
+        });
+        li.appendChild(checkBox);
+
+
+        //text
+        const textSpan = document.createElement('span');
+        textSpan.className = 'text';
+        textSpan.textContent = t.text;
+        li.appendChild(textSpan);
+
+        //time
+        const timeSpan = document.createElement('span');
+        timeSpan.className = 'time';
+        timeSpan.textContent = format12h(t.time);
+        li.appendChild(timeSpan);
+
         taskList.appendChild(li);
 
 
 
-    }
+    });
+    
 
 }
-
-  const taskArea = document.getElementById('task-list');
-  
-        taskArea.addEventListener('click', (event) => {
-            //check box
-            //.closest searches up the DOM tree for elements that matchese a specified CSS selector
-            //event only happen when the user click the check-box
-            const checkBox = event.target.closest('.check-box');
-            if(!checkBox) return;
-
-
-            const li = checkBox.closest('li');
-            if(!li) return;
-            
-            const id = li.dataset.id;
-
-            //find the selected item's id
-            const item = todos.find(t => t.id === id);
-            if(!item) return;
-            item.isDone = !item.isDone;
-
-            saveTodos();
-            renderTodos();
-
-
-
-        })
-        
-
-renderTodos();
 
 
