@@ -88,6 +88,9 @@ const timeInput = document.querySelector('#task-time')
 //read the local storage
 let todos = JSON.parse(localStorage.getItem('todos') || '[]');
 
+//for edit feature, null means no task is being edit
+let editingTaskId = null;
+
 //function to save todos
 function saveTodos() {
     localStorage.setItem('todos', JSON.stringify(todos));
@@ -155,6 +158,7 @@ function format12h(hhmm) {
     }).format(d);
 }
 
+
 //render function
 function renderTodos() {
     const dayKey = ymd(selectedDate);
@@ -181,6 +185,8 @@ function renderTodos() {
 
     //todo content
     todayTodos.forEach(t => {
+
+        //render a todo list DOM
         const li = document.createElement('li');
         li.className = 'item';
         if (t.isDone) li.classList.add('done');
@@ -189,7 +195,7 @@ function renderTodos() {
         //check box
         const checkBox = document.createElement('span');
         checkBox.className = 'check-box';
-        checkBox.addEventListener('click',() => {
+        checkBox.addEventListener('click', () => {
             t.isDone = !t.isDone;
             saveTodos();
             renderTodos();
@@ -197,25 +203,106 @@ function renderTodos() {
         li.appendChild(checkBox);
 
 
-        //text
-        const textSpan = document.createElement('span');
-        textSpan.className = 'text';
-        textSpan.textContent = t.text;
-        li.appendChild(textSpan);
+        //if the selected task is being edit, switch to edit mode
+        if (t.id === editingTaskId) {
+            //input
+            const textInput = document.createElement('input');
+            textInput.className = 'inputBox';
+            textInput.value = t.text;
+            li.appendChild(textInput);
+            
+            //time
+            const timeInput = document.createElement('input');
+            timeInput.type = 'time';
+            timeInput.className = 'timeBox';
+            timeInput.value = t.time || "";
+            li.appendChild(timeInput);
 
-        //time
-        const timeSpan = document.createElement('span');
-        timeSpan.className = 'time';
-        timeSpan.textContent = format12h(t.time);
-        li.appendChild(timeSpan);
+            //save new edited task (support enter key)
+            textInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    saveEditTask(t.id, textInput.value, timeInput.value);
+                }
+            });
+
+            //update button
+            const updateTaskBtn = document.createElement('button');
+            updateTaskBtn.className = 'updateTask-btn';
+            updateTaskBtn.textContent = 'Update';
+            updateTaskBtn.addEventListener('click', () => {
+                saveEditTask(t.id, textInput.value,timeInput.value);
+            });
+            li.appendChild(updateTaskBtn);
+
+
+        } else {
+
+            //show regular view ui
+            //text
+            const textSpan = document.createElement('span');
+            textSpan.className = 'text';
+            textSpan.textContent = t.text;
+            li.appendChild(textSpan);
+
+            //time
+            const timeSpan = document.createElement('span');
+            timeSpan.className = 'time';
+            timeSpan.textContent = format12h(t.time);
+            li.appendChild(timeSpan);
+
+            //edit
+            const editButton = document.createElement('button');
+            editButton.className = 'edit-btn';
+            editButton.addEventListener('click', () => {
+                editingTask(t.id);
+            });
+            li.appendChild(editButton);
+
+
+        }
 
         taskList.appendChild(li);
-
-
-
     });
-    
+
+
 
 }
+
+
+//telling which ui to render(switch mode)
+function editingTask(id) {
+    editingTaskId = id;
+    renderTodos();
+}
+
+
+function saveEditTask(id, newInput, newTime) {
+    //find the task
+    const task = todos.find(t => t.id === id);
+    if (!task) return;
+    //update content
+    task.text = newInput;
+    if(typeof newTime === 'string' && newTime) task.time = newTime;
+    //exit editing mode
+    editingTaskId = null;
+
+    saveTodos();
+    renderTodos();
+
+}
+
+
+function deleteTask(id) {
+    const task = todos.find(t => t.id === id);
+    if (!task) return;
+    delete task[t.id];
+
+
+    saveTodos();
+    renderTodos();
+}
+
+
+renderTodos();
 
 
