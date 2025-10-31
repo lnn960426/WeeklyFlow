@@ -210,7 +210,7 @@ function renderTodos() {
             textInput.className = 'inputBox';
             textInput.value = t.text;
             li.appendChild(textInput);
-            
+
             //time
             const timeInput = document.createElement('input');
             timeInput.type = 'time';
@@ -223,16 +223,44 @@ function renderTodos() {
                 if (e.key === 'Enter') {
                     saveEditTask(t.id, textInput.value, timeInput.value);
                 }
+
+                if(e.key === 'Escape') {
+                    editingTaskId = null;
+                    renderTodos;
+                }
             });
 
             //update button
             const updateTaskBtn = document.createElement('button');
             updateTaskBtn.className = 'updateTask-btn';
             updateTaskBtn.textContent = 'Update';
+            updateTaskBtn.type = 'button';
             updateTaskBtn.addEventListener('click', () => {
-                saveEditTask(t.id, textInput.value,timeInput.value);
+                const newText = textInput.value.trim();
+                const newTime = timeInput.value;
+                if(!newText) return; //avoid empty text
+                //if the content stays the same, just exit
+                if(newText === t.text && newTime === (t.time || "")){
+                    editingTaskId = null;
+                    renderTodos();
+                    return;
+                    
+                }
+                saveEditTask(t.id, textInput.value, timeInput.value);
             });
             li.appendChild(updateTaskBtn);
+            
+            //calcel del button
+            const calBtn = document.createElement('button');
+            calBtn.className = 'cancel-btn';
+            calBtn.textContent = 'Cancel';
+            updateTaskBtn.type = 'button';
+            calBtn.addEventListener('click',() =>{
+                editingTaskId = null;
+                    renderTodos();
+            })
+            li.appendChild(calBtn);
+
 
 
         } else {
@@ -258,6 +286,15 @@ function renderTodos() {
             });
             li.appendChild(editButton);
 
+            //delete
+            const delButton = document.createElement('button');
+            delButton.className = 'del-btn'
+            delButton.addEventListener('click', () => {
+                if (confirm('Delete this task?'))
+                    deleteTask(t.id);
+            });
+            li.appendChild(delButton);
+
 
         }
 
@@ -282,7 +319,7 @@ function saveEditTask(id, newInput, newTime) {
     if (!task) return;
     //update content
     task.text = newInput;
-    if(typeof newTime === 'string' && newTime) task.time = newTime;
+    if (typeof newTime === 'string' && newTime) task.time = newTime;
     //exit editing mode
     editingTaskId = null;
 
@@ -293,10 +330,11 @@ function saveEditTask(id, newInput, newTime) {
 
 
 function deleteTask(id) {
-    const task = todos.find(t => t.id === id);
-    if (!task) return;
-    delete task[t.id];
+    //if editing the task, when del, exit
+    if (editingTaskId === id) editingTask = null;
 
+    //delete the task
+    todos = todos.filter(t => t.id !== id);
 
     saveTodos();
     renderTodos();

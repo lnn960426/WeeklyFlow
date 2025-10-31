@@ -156,6 +156,8 @@ button {
     font-size: 1rem;
     color: #1d224e;
     gap: 0.75rem;
+    background-color: #f3f5ff;
+    flex-wrap: wrap; /* allow excess words go to next line*/ 
 }
 
 .item .text {
@@ -236,7 +238,32 @@ button {
     background-color: #1cc3ad;
 }
 
+.cancel-btn{
+    padding: 2px 4px;
+    width: 3rem;
+    height: 1.5rem;
+    border: none;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    background-color: #a9a9a9;
+    color: white;
+    font-size: 0.7rem;
+}
 
+.cancel-btn:hover{
+    background-color:rgb(210, 45, 45);
+}
+
+.del-btn {
+    background-image: url('./assets/delete.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 18px;
+    height: 18px;
+    border: none;
+    cursor: pointer;
+}
 
 .check-box {
     display: grid;
